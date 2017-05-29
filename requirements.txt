@@ -1,2 +1,3 @@
 picamera
 boto3
+PIL

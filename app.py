@@ -1,9 +1,9 @@
 import os, time, datetime
 
-import RPi.GPIO as GPIO
+import operator
+from PIL import Image
 import picamera
 import boto
-
 
 print 'taking picture'
 timestamp = str(time.time()).split('.')[0]
@@ -14,6 +14,21 @@ with picamera.PiCamera() as camera:
     camera.vflip = False
     camera.hflip = False
     camera.capture(file_name)
+
+print 'running histogram equalization on picture'
+def equalize(h):
+    lut = []
+    for b in range(0, len(h), 256):
+        step = reduce(operator.add, h[b:b+256]) / 255
+        n = 0
+        for i in range(256):
+            lut.append(n / step)
+            n = n + h[i+b]
+    return lut
+    im = Image.open(file_name)
+    lut = equalize(im.histogram())
+    im = im.point(lut)
+    im.save(file_name)
 
 print 'uploading image to s3'
 connection = boto.s3.connect_to_region(
