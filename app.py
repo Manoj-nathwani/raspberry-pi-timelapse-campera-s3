@@ -4,8 +4,6 @@ import RPi.GPIO as GPIO
 import picamera
 import boto
 
-import settings
-
 
 print 'taking picture'
 timestamp = str(time.time()).split('.')[0]
@@ -20,10 +18,10 @@ with picamera.PiCamera() as camera:
 print 'uploading image to s3'
 connection = boto.s3.connect_to_region(
     'eu-west-1',
-    aws_access_key_id=settings.AWS_KEY,
-    aws_secret_access_key=settings.AWS_SECRET
+    aws_access_key_id=os.environ['S3_KEY'],
+    aws_secret_access_key=os.environ['S3_SECRET']
 )
-bucket = connection.get_bucket(settings.AWS_S3_BUCKET)
+bucket = connection.get_bucket(os.environ['S3_BUCKET'])
 key = bucket.new_key(file_name)
 key.set_contents_from_filename(file_name)
 key.make_public()
