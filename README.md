@@ -9,9 +9,7 @@ https://gist.github.com/Manoj-nathwani/51d312eb20011cd2526024f072a417f9
 
 Install everything
 ```
-$ sudo apt-get update
-$ sudo apt-get install git
-$ sudo apt-get install python-pip
+$ sudo apt-get install python-imaging
 $ pip install -r requirements.txt
 $ sudo raspi-config # enable camera
 ```
