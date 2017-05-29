@@ -16,6 +16,7 @@ with picamera.PiCamera() as camera:
     camera.capture(file_name)
 
 print 'running histogram equalization on picture'
+# credit: http://effbot.org/zone/pil-histogram-equalization.htm
 def equalize(h):
     lut = []
     for b in range(0, len(h), 256):
